@@ -12,6 +12,13 @@
   align-items: center;
 }
 
+.App-header select {
+  width: 100%;
+  max-width: 200px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
 .flashcard {
   margin: 2rem;
   padding: 1rem;

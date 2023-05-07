@@ -54,9 +54,46 @@ const frenchWords = [
   { french: "Août", english: "August" },
 ];
 
+const italianWords = [
+  { italian: "Ciao", english: "Hello" },
+  { italian: "Grazie", english: "Thank you" },
+  { italian: "Prego", english: "You're welcome" },
+  { italian: "Mi chiamo", english: "My name is" },
+  { italian: "Come stai?", english: "How are you?" },
+  { italian: "Sì", english: "Yes" },
+  { italian: "No", english: "No" },
+  { italian: "Per favore", english: "Please" },
+  { italian: "Scusa", english: "Excuse me" },
+  { italian: "Arrivederci", english: "Goodbye" },
+  { italian: "Buongiorno", english: "Good morning" },
+  { italian: "Buonasera", english: "Good evening" },
+  { italian: "Buonanotte", english: "Good night" },
+  { italian: "Casa", english: "House" },
+  { italian: "Amico", english: "Friend" },
+  { italian: "Famiglia", english: "Family" },
+  { italian: "Cibo", english: "Food" },
+  { italian: "Acqua", english: "Water" },
+  { italian: "Vino", english: "Wine" },
+  { italian: "Pane", english: "Bread" },
+  { italian: "Carne", english: "Meat" },
+  { italian: "Pesce", english: "Fish" },
+  { italian: "Frutta", english: "Fruit" },
+  { italian: "Verdura", english: "Vegetable" },
+  { italian: "Dolce", english: "Dessert" },
+  { italian: "Tavolo", english: "Table" },
+  { italian: "Sedia", english: "Chair" },
+  { italian: "Cucina", english: "Kitchen" },
+];
+
 function App() {
   const [score, setScore] = useState(0);
-  const [currentWord, setCurrentWord] = useState(getRandomWord());
+  const [language, setLanguage] = useState("french");
+  const [currentWord, setCurrentWord] = useState(getRandomWord(language));
+
+  function handleLanguageChange(e) {
+    setLanguage(e.target.value);
+    setCurrentWord(getRandomWord(e.target.value));
+  }
 
   function getRandomWord() {
     return frenchWords[Math.floor(Math.random() * frenchWords.length)];
@@ -81,12 +118,16 @@ function App() {
       setCurrentWord(getRandomWord());
     }
   }
-
+  
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Learn French</h1>
+        <h1>Learn French or Italian</h1>
         <div className="score">Score: {score}</div>
+        <select value={language} onChange={handleLanguageChange}>
+          <option value="french">French</option>
+          <option value="italian">Italian</option>
+        </select>
       </header>
       <div className="flashcard">
         <h2>{currentWord.french}</h2>
