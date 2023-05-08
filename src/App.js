@@ -130,13 +130,60 @@ const italianWords = [
   { italian: "La scarpa", english: "Shoe" },
   { italian: "La camicia", english: "Shirt" },
   { italian: "La giacca", english: "Jacket" },
+  { italian: "Stazione", english: "Station" },
+{ italian: "Aeroporto", english: "Airport" },
+{ italian: "Albergo", english: "Hotel" },
+{ italian: "Ristorante", english: "Restaurant" },
+{ italian: "Negozio", english: "Shop" },
+{ italian: "Farmacia", english: "Pharmacy" },
+{ italian: "Bar", english: "Café" },
+{ italian: "Spiaggia", english: "Beach" },
+{ italian: "Museo", english: "Museum" },
+{ italian: "Biblioteca", english: "Library" },
+{ italian: "Ospedale", english: "Hospital" },
+{ italian: "Stadio", english: "Stadium" },
+{ italian: "Cinema", english: "Cinema" },
+{ italian: "Teatro", english: "Theater" },
+{ italian: "Chiesa", english: "Church" },
+{ italian: "Piazza", english: "Square" },
+{ italian: "Parco", english: "Park" },
+{ italian: "Banca", english: "Bank" },
+{ italian: "Scuola", english: "School" },
+{ italian: "Università", english: "University" },
+{ italian: "Ufficio", english: "Office" },
+{ italian: "Supermercato", english: "Supermarket" },
+{ italian: "Panetteria", english: "Bakery" },
+{ italian: "Macelleria", english: "Butcher" },
+{ italian: "Fioraio", english: "Florist" },
+{ italian: "Pescivendolo", english: "Fishmonger" },
+{ italian: "Fruttivendolo", english: "Greengrocer" },
+{ italian: "Mercato", english: "Market" },
+{ italian: "Edicola", english: "Newsstand" },
+{ italian: "Tabaccheria", english: "Tobacco shop" },
+{ italian: "Autobus", english: "Bus" },
+{ italian: "Treno", english: "Train" },
+{ italian: "Taxi", english: "Taxi" },
+{ italian: "Metro", english: "Subway" },
+{ italian: "Tram", english: "Tram" },
+{ italian: "Bicicletta", english: "Bicycle" },
+{ italian: "Motocicletta", english: "Motorcycle" },
+{ italian: "Macchina", english: "Car" },
+{ italian: "Aereo", english: "Airplane" },
+{ italian: "Nave", english: "Ship" },
+{ italian: "Barca", english: "Boat" },
+{ italian: "Lavoro", english: "Work" },
+{ italian: "Divertimento", english: "Fun" },
+{ italian: "Vacanza", english: "Vacation" },
+{ italian: "Viaggio", english: "Trip" },
+{ italian: "Amore", english: "Love" },
+{ italian: "Amicizia", english: "Friendship" },
+{ italian: "Felicità", english: "Happiness" },
 ];
 
 function App() {
   const [score, setScore] = useState(0);
   const [language, setLanguage] = useState("french");
   const [currentWord, setCurrentWord] = useState(getRandomWord(language));
-  const [correctAnswer, setCorrectAnswer] = useState("");
   const [choices, setChoices] = useState(generateChoices(currentWord.translation));
   const [message, setMessage] = useState("");
 
@@ -163,26 +210,25 @@ function App() {
     let choices = [correct];
     const words = language === "french" ? frenchWords : italianWords;
     const uniqueWords = words.filter(word => word.english !== correct);
-  
-    while (choices.length < 5) {
+
+    while (choices.length < 6) {
       const randomWord = uniqueWords[Math.floor(Math.random() * uniqueWords.length)].english;
       if (!choices.includes(randomWord)) {
         choices.push(randomWord);
       }
     }
-  
+
     return choices.sort(() => Math.random() - 0.5);
-  }  
+  }
 
   function checkAnswer(answer) {
     if (answer === currentWord.translation) {
       setScore(score + 1);
       setMessage(`Correct! ${currentWord.word} means ${currentWord.translation}`);
+      setCurrentWord(getRandomWord(language));
     } else {
-      setMessage(`Incorrect. ${currentWord.word} means ${currentWord.translation}`);
+      setMessage("Incorrect");
     }
-    setCurrentWord(getRandomWord(language));
-    setCorrectAnswer("");
   }
   
   return (
