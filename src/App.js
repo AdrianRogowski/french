@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
 const frenchWords = [
@@ -136,33 +136,51 @@ function App() {
   const [score, setScore] = useState(0);
   const [language, setLanguage] = useState("french");
   const [currentWord, setCurrentWord] = useState(getRandomWord(language));
+  const [correctAnswer, setCorrectAnswer] = useState("");
+  const [choices, setChoices] = useState(generateChoices(currentWord.translation));
+
+  useEffect(() => {
+    setChoices(generateChoices(currentWord.translation));
+  }, [currentWord]);
 
   function handleLanguageChange(e) {
     setLanguage(e.target.value);
     setCurrentWord(getRandomWord(e.target.value));
   }
 
-  function getRandomWord() {
-    return frenchWords[Math.floor(Math.random() * frenchWords.length)];
+  function getRandomWord(language) {
+    const words = language === "french" ? frenchWords : italianWords;
+    const randomWord = words[Math.floor(Math.random() * words.length)];
+  
+    return {
+      word: language === "french" ? randomWord.french : randomWord.italian,
+      translation: randomWord.english
+    };
   }
 
   function generateChoices(correct) {
     let choices = [correct];
+    const words = language === "french" ? frenchWords : italianWords;
+    const uniqueWords = words.filter(word => word.english !== correct);
+  
     while (choices.length < 5) {
-      const randomWord = getRandomWord().english;
+      const randomWord = uniqueWords[Math.floor(Math.random() * uniqueWords.length)].english;
       if (!choices.includes(randomWord)) {
         choices.push(randomWord);
       }
     }
+  
     return choices.sort(() => Math.random() - 0.5);
-  }
+  }  
 
   function checkAnswer(answer) {
-    if (answer === currentWord.english) {
+    if (answer === currentWord.translation) {
       setScore(score + 1);
-      setCurrentWord(getRandomWord());
+      setCurrentWord(getRandomWord(language));
+      setCorrectAnswer("");
     } else {
-      setCurrentWord(getRandomWord());
+      setCorrectAnswer(currentWord.translation);
+      setCurrentWord(getRandomWord(language));
     }
   }
   
@@ -177,13 +195,16 @@ function App() {
         </select>
       </header>
       <div className="flashcard">
-        <h2>{currentWord.french}</h2>
+        {correctAnswer && (
+          <p className="correct-answer">The correct answer was: {correctAnswer}</p>
+        )}
+      < h2>{currentWord.word}</h2>
         <ul>
-          {generateChoices(currentWord.english).map((choice, index) => (
-            <li key={index}>
-              <button onClick={() => checkAnswer(choice)}>{choice}</button>
-            </li>
-          ))}
+        {choices.map((choice, index) => (
+          <li key={index}>
+            <button onClick={() => checkAnswer(choice)}>{choice}</button>
+          </li>
+        ))}
         </ul>
       </div>
     </div>
