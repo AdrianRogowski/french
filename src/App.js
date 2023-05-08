@@ -138,6 +138,7 @@ function App() {
   const [currentWord, setCurrentWord] = useState(getRandomWord(language));
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [choices, setChoices] = useState(generateChoices(currentWord.translation));
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     setChoices(generateChoices(currentWord.translation));
@@ -176,12 +177,12 @@ function App() {
   function checkAnswer(answer) {
     if (answer === currentWord.translation) {
       setScore(score + 1);
-      setCurrentWord(getRandomWord(language));
-      setCorrectAnswer("");
+      setMessage(`Correct! ${currentWord.word} means ${currentWord.translation}`);
     } else {
-      setCorrectAnswer(currentWord.translation);
-      setCurrentWord(getRandomWord(language));
+      setMessage(`Incorrect. ${currentWord.word} means ${currentWord.translation}`);
     }
+    setCurrentWord(getRandomWord(language));
+    setCorrectAnswer("");
   }
   
   return (
@@ -194,10 +195,10 @@ function App() {
           <option value="italian">Italian</option>
         </select>
       </header>
+      <p className="message">
+        {message}
+      </p>
       <div className="flashcard">
-        {correctAnswer && (
-          <p className="correct-answer">The correct answer was: {correctAnswer}</p>
-        )}
       < h2>{currentWord.word}</h2>
         <ul>
         {choices.map((choice, index) => (
